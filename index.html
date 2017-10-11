@@ -7,6 +7,9 @@
                 width: 640px;
                 height: 360px;
             }
+            pre{
+              color:#f00;
+            }
         </style>
     </head>
     <body>
@@ -19,9 +22,29 @@
           crossorigin="anonymous"></script>
         <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
         <script>
-        window.console.log = function(param) {
-            $('body').append('<div>'+param+'</div>');
-        };
+            function errorHandling(message) {
+              this.name = 'errorHandling';
+              this.message = message || 'Default Message';
+              this.stack = (new Error()).stack;
+            }
+            errorHandling.prototype = Object.create(Error.prototype);
+            errorHandling.prototype.constructor = errorHandling;
+
+            window.onerror = function(msg, url, line, col, error) {
+              var extra = !col ? '' : '\ncolumn: ' + col;
+              extra += !error ? '' : '\nerror: ' + error;
+              console.error("Error: " + msg + "\nurl: " + url + "\nline: " + line + extra);
+              var suppressErrorAlert = true;
+              return suppressErrorAlert;
+            };
+
+            // window.console.log = function(param) {
+            //     $('body').append('<pre>'+param+'</pre>');
+            // };
+            window.console.error = function(param) {
+                $('body').append('<pre>'+param+'</pre>');
+            };
+
             (function(){
                 var url = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
                 var player = dashjs.MediaPlayer().create();
