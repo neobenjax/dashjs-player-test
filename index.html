@@ -22,30 +22,35 @@
           crossorigin="anonymous"></script>
         <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
         <script>
-            function errorHandling(message) {
-              this.name = 'errorHandling';
-              this.message = message || 'Default Message';
-              this.stack = (new Error()).stack;
-            }
-            errorHandling.prototype = Object.create(Error.prototype);
-            errorHandling.prototype.constructor = errorHandling;
-
-            window.onerror = function(msg, url, line, col, error) {
-              var extra = !col ? '' : '\ncolumn: ' + col;
-              extra += !error ? '' : '\nerror: ' + error;
-              console.error("Error: " + msg + "\nurl: " + url + "\nline: " + line + extra);
-              var suppressErrorAlert = true;
-              return suppressErrorAlert;
-            };
-
-            window.console.log = function(param) {
-                $('body').append('<pre>'+param+'</pre>');
-            };
-            window.console.error = function(param) {
-                $('body').append('<pre class="red">'+param+'</pre>');
-            };
+            // function errorHandling(message) {
+            //   this.name = 'errorHandling';
+            //   this.message = message || 'Default Message';
+            //   this.stack = (new Error()).stack;
+            // }
+            // errorHandling.prototype = Object.create(Error.prototype);
+            // errorHandling.prototype.constructor = errorHandling;
+            //
+            // window.onerror = function(msg, url, line, col, error) {
+            //   var extra = !col ? '' : '\ncolumn: ' + col;
+            //   extra += !error ? '' : '\nerror: ' + error;
+            //   console.error("Error: " + msg + "\nurl: " + url + "\nline: " + line + extra);
+            //   var suppressErrorAlert = true;
+            //   return suppressErrorAlert;
+            // };
+            //
+            // window.console.log = function(param) {
+            //     $('body').append('<pre>'+param+'</pre>');
+            // };
+            // window.console.error = function(param) {
+            //     $('body').append('<pre class="red">'+param+'</pre>');
+            // };
 
             (function(){
+                //Detect media source
+                window.MediaSource = window.MediaSource || window.WebKitMediaSource;
+                if (!!!window.MediaSource) {
+                  alert('MediaSource API is not available');
+                }
                 var url = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
                 var player = dashjs.MediaPlayer().create();
                 console.log('Entrando en función');
