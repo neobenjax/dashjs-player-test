@@ -7,7 +7,7 @@
                 width: 640px;
                 height: 360px;
             }
-            pre{
+            pre.red{
               color:#f00;
             }
         </style>
@@ -38,17 +38,24 @@
               return suppressErrorAlert;
             };
 
-            // window.console.log = function(param) {
-            //     $('body').append('<pre>'+param+'</pre>');
-            // };
-            window.console.error = function(param) {
+            window.console.log = function(param) {
                 $('body').append('<pre>'+param+'</pre>');
+            };
+            window.console.error = function(param) {
+                $('body').append('<pre class="red">'+param+'</pre>');
             };
 
             (function(){
                 var url = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
                 var player = dashjs.MediaPlayer().create();
-                player.initialize(document.querySelector("#videoPlayer"), url, true);
+                console.log('Entrando en función');
+                console.log(JSON.stringify(player));
+                try{
+                  console.log('Inside try')
+                  player.initialize(document.getElementById('videoPlayer'), url, true);
+                } catch(e){
+                  console.error('Error:',JSON.stringify(e));
+                }
             })();
         </script>
     </body>
